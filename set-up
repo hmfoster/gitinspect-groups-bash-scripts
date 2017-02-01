@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#clone down gitinspector
+git clone https://github.com/ejwa/gitinspector.git
+
+#create directory for repos
+mkdir repos
+
+#create directory to store gitinspector results
+mkdir results
+
+#clone all repos listed in file into repos
+if [ ! -s repo-urls.text ]
+  then
+    touch repo-urls.txt
+    echo "Please add the list of repos to inspect to repo-urls.txt"
+    read -p "Ready to continue?" yn
+    if [[ $yn !=  [Yy]* ]]
+      then
+        exit
+    fi
+fi
+
+cd repos
+while IFS= read -r var
+do
+  git clone "$var"
+done < ../repo-urls.txt
+cd ..
