@@ -1,4 +1,7 @@
 #!/bin/bash
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+BOLD='\033[1;m'
 
 #clone down gitinspector
 git clone https://github.com/ejwa/gitinspector.git
@@ -10,10 +13,10 @@ mkdir repos
 mkdir results
 
 #clone all repos listed in file into repos
-if [ ! -s repo-urls.text ]
+if [ ! -s repo-urls.txt ]
   then
     touch repo-urls.txt
-    echo "Please add the list of repos to inspect to repo-urls.txt"
+    echo -e "${RED}Please add the list of repos to inspect to ${BOLD}repo-urls.txt${NC}"
     read -p "Ready to continue?" yn
     if [[ $yn !=  [Yy]* ]]
       then

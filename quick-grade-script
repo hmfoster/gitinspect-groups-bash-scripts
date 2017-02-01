@@ -1,6 +1,8 @@
 #!/bin/bash
-
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 #find out if user wants to update repos
+
 read -p "Wanna pull in recent updates?" yn
 
 #pull down changes for all repos
@@ -15,19 +17,27 @@ if [[ $yn ==  [Yy]* ]]
     done
 fi
 
+read -p "Wanna run the inspector?" Yn
 #run git inspecter for all repos
-for dir in repos/*/
-do
-  python gitinspector/gitinspector.py --grading  --format=html "$dir" > results/$(basename "$dir").html
-done
+if [[ $Yn ==  [Yy]* ]]
+  then
+    for dir in repos/*/
+    do
+      python gitinspector/gitinspector.py --grading  --format=html "$dir" > results/$(basename "$dir").html
+    done
+fi
 
+read -p "Wanna open the results in the browser?" YN
 #open the results in the browser
-for f in results/*.html
-do
-  if [ -s "$f" ]
-    then
-      open "$f"
-      continue
-  fi
-  echo "$f failed"
-done
+if [[ $YN ==  [Yy]* ]]
+  then
+    for f in results/*.html
+    do
+      if [ -s "$f" ]
+        then
+          open "$f"
+          continue
+      fi
+      echo -e "${RED}Inspection of $f failed${NC}"
+    done
+fi
