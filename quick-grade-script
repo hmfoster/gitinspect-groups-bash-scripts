@@ -21,10 +21,21 @@ read -p "Wanna run the inspector?" Yn
 #run git inspecter for all repos
 if [[ $Yn ==  [Yy]* ]]
   then
-    for dir in repos/*/
-    do
-      python gitinspector/gitinspector.py --grading  --format=html "$dir" > results/$(basename "$dir").html
-    done
+    read -p "Do you only want to see commits made after a specific date?" yn
+    if [[ $yn == [Nn]* ]]
+      then
+        for dir in repos/*/
+          do
+            python gitinspector/gitinspector.py --grading  --format=html "$dir" > results/$(basename "$dir").html
+          done
+      else
+        read -p "When is the earliest commit you want to view? Ex: 'yesterday', 'two weeks ago', 'June 8th, 2016'" date
+        for dir in repos/*/
+          do
+            python gitinspector/gitinspector.py --grading  --format=html --since="$date" "$dir" > results/$(basename "$dir").html
+          done
+    fi
+
 fi
 
 read -p "Wanna open the results in the browser?" YN
